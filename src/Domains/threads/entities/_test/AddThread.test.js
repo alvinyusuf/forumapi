@@ -24,4 +24,19 @@ describe('a AddThread entities', () => {
     // Action dan Assert
     expect(() => new AddThread(payload)).toThrowError('ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
+
+  it('harus membuat objek addThread dengan benar', () => {
+    // Assert
+    const payload = {
+      title: 'ini contoh title',
+      body: 'ini contoh body',
+    };
+
+    // Action
+    const { title, body } = new AddThread(payload);
+
+    // Assert
+    expect(title).toEqual(payload.title);
+    expect(body).toEqual(payload.body);
+  });
 });
