@@ -3,15 +3,15 @@ class AddedThread {
     this.verifyPayload(payload);
 
     this.id = payload.id;
-    this.title = payload.title;
     this.owner = payload.owner;
+    this.title = payload.title;
     this.body = payload.body;
   }
 
   verifyPayload(payload) {
     const { id } = payload;
-    const { title } = payload;
     const { owner } = payload;
+    const { title } = payload;
     const { body } = payload;
 
     // mengecek apakah data yang dibutuhkan sudah ada atau belum
