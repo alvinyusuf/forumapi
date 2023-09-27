@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 class AddedThread {
   constructor(payload) {
     this.verifyPayload(payload);

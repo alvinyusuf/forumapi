@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const AddThread = require('../AddThread');
 
 describe('a AddThread entities', () => {
@@ -15,6 +14,7 @@ describe('a AddThread entities', () => {
   it('harus membangkitkan error ketika ada data yang tidak sesuai tipe datanya', () => {
     // Arrange
     const payload = {
+      owner: 'user-123',
       title: {
         judul: 'ini adalah judul',
       },
@@ -28,14 +28,16 @@ describe('a AddThread entities', () => {
   it('harus membuat objek addThread dengan benar', () => {
     // Assert
     const payload = {
+      owner: 'user-123',
       title: 'ini contoh title',
       body: 'ini contoh body',
     };
 
     // Action
-    const { title, body } = new AddThread(payload);
+    const { owner, title, body } = new AddThread(payload);
 
     // Assert
+    expect(owner).toEqual(payload.owner);
     expect(title).toEqual(payload.title);
     expect(body).toEqual(payload.body);
   });

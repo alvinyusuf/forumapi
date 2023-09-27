@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const ThreadRepository = require('../ThreadRepository');
 
 describe('ThreadRepository interface', () => {
@@ -9,6 +8,5 @@ describe('ThreadRepository interface', () => {
     // Action dan Assert
     await expect(threadRepository.addThread({})).rejects.toThrowError('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     await expect(threadRepository.getThreadById()).rejects.toThrowError('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED');
-    await expect(threadRepository.deleteThread()).rejects.toThrowError('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   });
 });

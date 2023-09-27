@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const DetailThread = require('../DetailThread');
 
 describe('a DetailThread entities', () => {
