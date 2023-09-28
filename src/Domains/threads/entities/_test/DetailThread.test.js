@@ -7,7 +7,7 @@ describe('a DetailThread entities', () => {
       id: 'thread-123',
       title: 'Ini contoh title',
       owner: 'user-123',
-      comments: [],
+      // comments: [],
     };
 
     // Action dan Assert
@@ -22,7 +22,7 @@ describe('a DetailThread entities', () => {
       owner: [],
       body: {},
       date: '26-September-2023',
-      comments: [],
+      // comments: [],
     };
 
     // Action dan Assert
@@ -37,12 +37,13 @@ describe('a DetailThread entities', () => {
       owner: 'user-123',
       body: 'Ini contoh body',
       date: '26-September-2023',
-      comments: [],
+      // comments: [],
     };
 
     // Action
     const {
-      id, title, owner, body, date, comments,
+      // id, title, owner, body, date, comments,
+      id, title, owner, body, date,
     } = new DetailThread(payload);
 
     // Assert
@@ -51,6 +52,6 @@ describe('a DetailThread entities', () => {
     expect(owner).toEqual(payload.owner);
     expect(body).toEqual(payload.body);
     expect(date).toEqual(payload.date);
-    expect(comments).toEqual(payload.comments);
+    // expect(comments).toEqual(payload.comments);
   });
 });

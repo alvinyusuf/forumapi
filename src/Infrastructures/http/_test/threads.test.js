@@ -1,5 +1,5 @@
 const pool = require('../../database/postgres/pool');
-const ThreadsTableTestTable = require('../../../../tests/ThreadsTableTestHelper');
+const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const container = require('../../container');
 const createServer = require('../createServer');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
@@ -47,17 +47,14 @@ describe('/threads endpoint', () => {
   });
 
   afterAll(async () => {
-    await ThreadsTableTestTable.cleanTable();
-    await UsersTableTestHelper.cleanTable();
-    await AuthenticationsTableTestHelper.cleanTable();
     await pool.end();
   });
 
-  // afterEach(async () => {
-  //   await ThreadsTableTestTable.cleanTable();
-  //   await UsersTableTestHelper.cleanTable();
-  //   await AuthenticationsTableTestHelper.cleanTable();
-  // });
+  afterEach(async () => {
+    await ThreadsTableTestHelper.cleanTable();
+    await UsersTableTestHelper.cleanTable();
+    await AuthenticationsTableTestHelper.cleanTable();
+  });
 
   describe('ketika POST /threads', () => {
     it('harus mengembalikan responCode 201 dan menambahkan thread baru', async () => {
@@ -80,6 +77,7 @@ describe('/threads endpoint', () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+      // console.log(responseJson);
       expect(response.statusCode).toEqual(201);
     });
   });

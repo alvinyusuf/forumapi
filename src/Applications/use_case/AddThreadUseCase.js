@@ -7,7 +7,7 @@ class AddTheradUseCase {
 
   execute(payload) {
     const addThread = new AddThread(payload);
-    return this._threadRepository.addThread(addThread);
+    return this._threadRepository.createThread(addThread);
   }
 }
 
