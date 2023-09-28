@@ -1,6 +1,6 @@
 {
-  "user": "postgres",
-  "password": "desk45_nsi",
+  "user": "developer",
+  "password": "aku",
   "host": "localhost",
   "port": 5432,
   "database": "forumapi_test"

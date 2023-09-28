@@ -1,5 +1,6 @@
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const AddThread = require('../../../Domains/threads/entities/AddThread');
 const RegisterUser = require('../../../Domains/users/entities/RegisterUser');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
@@ -52,6 +53,14 @@ describe('ThreadRepositoryPostgres', () => {
   });
 
   describe('getThreadById function', () => {
+    it('harus membangkitkan error notfound apabila id tidak ditemukan', async () => {
+      // Arrange
+      const fakeIdGenerator = () => '123';
+      const threadRepository = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action dan Assert
+      expect(threadRepository.getThreadById('thread-123')).rejects.toThrowError(NotFoundError);
+    });
     it('harus bisa mendapatkan thread sesuai dengan id', async () => {
       // Arrange
       const fakeIdGenerator = () => '1234';
