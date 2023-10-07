@@ -202,23 +202,6 @@ container.register([
     },
   },
   {
-    key: GetDetailThreadUseCase.name,
-    Class: GetDetailThreadUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name,
-        },
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name,
-        },
-      ],
-    },
-  },
-  {
     key: AddCommentUseCase.name,
     Class: AddCommentUseCase,
     parameter: {
@@ -241,6 +224,27 @@ container.register([
     parameter: {
       injectType: 'destructuring',
       dependencies: [
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetDetailThreadUseCase.name,
+    Class: GetDetailThreadUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        // {
+        //   name: 'userRepository',
+        //   internal: UserRepository.name,
+        // },
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
+        },
         {
           name: 'commentRepository',
           internal: CommentRepository.name,

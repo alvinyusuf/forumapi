@@ -104,7 +104,7 @@ describe('ThreadRepositoryPostgres', () => {
       // Assert
       const result = await threadRepositoryPostgres.getThreadById(id);
       expect(result.id).toEqual(id);
-      expect(result.owner).toEqual(registerUser.username);
+      expect(result.username).toEqual(registerUser.username);
       expect(result.title).toEqual(addThread.title);
       expect(result.body).toEqual(addThread.body);
       expect(result.date).toBeDefined();

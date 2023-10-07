@@ -153,8 +153,8 @@ describe('/threads endpoint', () => {
     });
   });
 
-  describe('when GET /threads', () => {
-    it('should response 200', async () => {
+  describe('ketika GET /threads', () => {
+    it('harus merespon 200', async () => {
       // Arrange
       const server = await createServer(container);
 
@@ -166,13 +166,14 @@ describe('/threads endpoint', () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
+      console.log(responseJson);
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.thread).toBeDefined();
       expect(responseJson.data.thread.comments).toHaveLength(0);
     });
 
-    it('should response 404 when no thread found', async () => {
+    it('harus merespon 404 ketika thread tidak ditemukan', async () => {
       // Arrange
       const server = await createServer(container);
 

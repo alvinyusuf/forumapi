@@ -10,19 +10,22 @@ class GetDetailThreadUseCase {
     const detailThread = await this._threadRepository.getThreadById(id_thread);
 
     const comments = await this._commentRepository.getCommentsByThreadId(id_thread);
+    console.log(comments);
 
     const detailComment = [];
     comments.forEach((comment) => {
       detailComment.push(new DetailComment({
         id: comment.id,
-        owner: comment.owner,
-        content: comment.content,
+        username: comment.username,
+        content: comment.is_delete ? '**komentar telah dihapus**' : comment.content,
         date: comment.date,
-        is_delete: comment.is_delete,
       }));
     });
+
+    // sorting data dari date yang paling lama
+    detailComment.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     detailThread.comments = detailComment;
-    // detailThread.comments = detailComments;
     return detailThread;
   }
 }

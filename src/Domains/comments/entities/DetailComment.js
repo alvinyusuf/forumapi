@@ -1,23 +1,52 @@
+// class DetailComment {
+//   constructor(payload) {
+//     this.verifyPayload(payload);
+
+//     this.id = payload.id;
+//     this.username = payload.owner;
+//     this.date = payload.date;
+//     this.content = payload.is_delete ? '**komentar telah dihapus**' : payload.content;
+//   }
+
+//   verifyPayload({
+//     id, owner, content, date, is_delete,
+//   }) {
+//     const username = owner;
+//     if (!id || !username || !content || !date || is_delete === 'undefined') {
+//       throw new Error('DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
+//     }
+
+//     if (
+//       typeof id !== 'string' || typeof username !== 'string' || typeof content !== 'string'
+//        || typeof date !== 'string' || typeof is_delete !== 'boolean'
+//     ) {
+//       throw new Error('DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
+//     }
+//   }
+// }
+
 class DetailComment {
   constructor(payload) {
-    this.verifyPayload(payload);
+    this._verifyPayload(payload);
 
-    this.id = payload.id;
-    this.owner = payload.owner;
-    this.content = payload.is_delete ? '**komentar telah dihapus**' : payload.content;
-    this.date = payload.date;
+    const {
+      id, username, content, date,
+    } = payload;
+
+    this.id = id;
+    this.username = username;
+    this.content = content;
+    this.date = date;
   }
 
-  verifyPayload({
-    id, owner, content, date, is_delete,
+  _verifyPayload({
+    id, username, content, date,
   }) {
-    if (!id || !owner || !content || !date || is_delete === 'undefined') {
+    if (!id || !username || !content || !date) {
       throw new Error('DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (
-      typeof id !== 'string' || typeof owner !== 'string' || typeof content !== 'string' || typeof date !== 'string' || typeof is_delete !== 'boolean'
-    ) {
+    if (typeof id !== 'string' || typeof username !== 'string' || typeof content !== 'string' || typeof date !== 'string') {
       throw new Error('DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
