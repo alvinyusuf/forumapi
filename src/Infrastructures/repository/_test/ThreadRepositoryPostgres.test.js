@@ -1,10 +1,8 @@
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
-const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const AddThread = require('../../../Domains/threads/entities/AddThread');
 const RegisterUser = require('../../../Domains/users/entities/RegisterUser');
-const AddedThread = require('../../../Domains/threads/entities/AddedThread');
 const pool = require('../../database/postgres/pool');
 const UserRepositoryPostgres = require('../UserRepositoryPostgres');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
@@ -109,6 +107,7 @@ describe('ThreadRepositoryPostgres', () => {
       expect(result.owner).toEqual(registerUser.username);
       expect(result.title).toEqual(addThread.title);
       expect(result.body).toEqual(addThread.body);
+      expect(result.date).toBeDefined();
     });
   });
 });

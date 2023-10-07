@@ -24,9 +24,13 @@ exports.up = (pgm) => {
       type: 'TEXT',
       notNull: true,
     },
+    is_delete: {
+      type: 'BOOLEAN',
+      default: false,
+    },
     date: {
       type: 'VARCHAR(50)',
-      default: pgm.func('current_timestamp'),
+      notNull: true,
     },
   });
 };

@@ -3,7 +3,8 @@ class DetailThread {
     this.verifyPayload(payload);
 
     const {
-      id, title, owner, body, date, comments,
+      id, title, owner, body, date,
+      // id, title, owner, body, date, comments,
     } = payload;
 
     this.id = id;
@@ -26,10 +27,13 @@ class DetailThread {
     }
 
     // if (
-    // typeof id !== 'string' || typeof title !== 'string' || typeof owner !== 'string' ||
-    // typeof body !== 'string' || typeof date !== 'string' || !(comments instanceof Array
-    // )) {
-    if (typeof id !== 'string' || typeof title !== 'string' || typeof owner !== 'string' || typeof body !== 'string' || typeof date !== 'string') {
+    //   typeof id !== 'string' || typeof title !== 'string' || typeof owner !== 'string'
+    //   || typeof body !== 'string' || typeof date !== 'string' || !(comments instanceof Array
+    //   )) {
+    if (
+      typeof id !== 'string' || typeof title !== 'string' || typeof owner !== 'string'
+      || typeof body !== 'string' || typeof date !== 'string'
+    ) {
       throw new Error('DETAIL_THREAD.NOT_MEET_TYPE_DATA_SPECIFICATION');
     }
   }

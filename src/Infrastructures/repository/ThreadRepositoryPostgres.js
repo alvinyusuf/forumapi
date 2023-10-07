@@ -1,8 +1,7 @@
-const InvariantError = require('../../Commons/exceptions/InvariantError');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const AddedThread = require('../../Domains/threads/entities/AddedThread');
-const DetailThread = require('../../Domains/threads/entities/DetailThread');
 const ThreadRepository = require('../../Domains/threads/ThreadRepository');
+const DetailThread = require('../../Domains/threads/entities/DetailThread');
 
 class ThreadRepositoryPostgres extends ThreadRepository {
   constructor(pool, idGenerator) {
@@ -12,13 +11,13 @@ class ThreadRepositoryPostgres extends ThreadRepository {
   }
 
   async createThread(addThread) {
-    // date opsional, karena di database sudah ada nilai defaultnya menggunakan timestamp
     const id = `thread-${this._idGenerator()}`;
     const { owner, title, body } = addThread;
+    const date = new Date().toISOString();
 
     const query = {
-      text: 'INSERT INTO threads VALUES($1, $2, $3, $4) RETURNING id, owner, title, body',
-      values: [id, owner, title, body],
+      text: 'INSERT INTO threads VALUES($1, $2, $3, $4, $5) RETURNING id, owner, title, body',
+      values: [id, owner, title, body, date],
     };
 
     const result = await this._pool.query(query);

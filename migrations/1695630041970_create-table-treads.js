@@ -24,7 +24,7 @@ exports.up = (pgm) => {
     },
     date: {
       type: 'VARCHAR(50)',
-      default: pgm.func('current_timestamp'),
+      notNull: true,
     },
   });
 };

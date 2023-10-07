@@ -42,8 +42,8 @@ describe('a DetailThread entities', () => {
 
     // Action
     const {
-      // id, title, owner, body, date, comments,
       id, title, owner, body, date,
+      // id, title, owner, body, date, comments,
     } = new DetailThread(payload);
 
     // Assert

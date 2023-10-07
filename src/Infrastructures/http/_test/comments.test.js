@@ -1,12 +1,14 @@
 const pool = require('../../database/postgres/pool');
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
+const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const container = require('../../container');
 const createServer = require('../createServer');
-const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
-const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
 
-describe('/threads endpoint', () => {
-  let threadId;
+describe('/comment endpoint', () => {
+  // thread id yang akan digunakan di setiap pengujian
+  const threadId = 'thread-123';
+  let commentId = 'comment-123';
   // membuat user login supaya mendapatkan access token
   async function addUserAndGetAccessToken({
     username = 'alvin',
@@ -45,29 +47,35 @@ describe('/threads endpoint', () => {
   let accessToken;
   beforeAll(async () => {
     accessToken = await addUserAndGetAccessToken({});
+    await UsersTableTestHelper.addUser({});
+    await ThreadsTableTestHelper.addThread({});
   });
 
   afterAll(async () => {
-    await ThreadsTableTestHelper.cleanTable();
     await UsersTableTestHelper.cleanTable();
-    await AuthenticationsTableTestHelper.cleanTable();
+    await ThreadsTableTestHelper.cleanTable();
+    await CommentsTableTestHelper.cleanTable();
     await pool.end();
   });
 
-  describe('ketika POST /threads', () => {
-    it('harus mengembalikan responCode 201 dan menambahkan thread baru', async () => {
+  // afterEach(async () => {
+  // });
+
+  describe('ketika POST /threads/{threadID}/comments', () => {
+    // pengujian positif dilakukan terlebih dahulu karena untuk mempermudah
+    it('harus mengembalikan response 201 dan membuat comment dengan benar', async () => {
       // Arrange
-      const request = {
-        title: 'contoh title',
-        body: 'contoh body',
+      const payload = {
+        content: 'Ini contoh comment',
       };
+
       const server = await createServer(container);
 
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/threads',
-        payload: request,
+        url: `/threads/${threadId}/comments`,
+        payload,
         headers: {
           authorization: accessToken,
         },
@@ -77,23 +85,21 @@ describe('/threads endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');
-      expect(responseJson.data.addedThread).toBeDefined();
-
-      threadId = responseJson.data.addedThread.id;
+      expect(responseJson.data.addedComment).toBeDefined();
+      commentId = responseJson.data.addedComment.id;
     });
 
-    it('harus merespon 400 ketika payload tidak memuat semua properti', async () => {
+    it('harus merespon 400 ketika data payload tidak lengkap', async () => {
       // Arrange
-      const request = {
-        title: 'contoh title',
-      };
+      const payload = {};
+
       const server = await createServer(container);
 
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/threads',
-        payload: request,
+        url: `/threads/${threadId}/comments`,
+        payload,
         headers: {
           authorization: accessToken,
         },
@@ -103,47 +109,22 @@ describe('/threads endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('payload belum lengkap');
-    });
-
-    it('harus merespon 400 ketika payload tidak sesuai tipe datanya', async () => {
-      // Arrange
-      const request = {
-        title: true,
-        body: { body: 'contoh body' },
-      };
-      const server = await createServer(container);
-
-      // Action
-      const response = await server.inject({
-        method: 'POST',
-        url: '/threads',
-        payload: request,
-        headers: {
-          authorization: accessToken,
-        },
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('tipe data tidak sesuai');
+      expect(responseJson.message).toEqual('content comment belum ada');
     });
 
     it('harus merespon 401 ketika tidak memiliki authorisasi', async () => {
       // Arrange
-      const request = {
-        title: 'ini contoh title',
-        body: 'contoh body',
+      const payload = {
+        content: 'Ini adalah contoh comment',
       };
+
       const server = await createServer(container);
 
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/threads',
-        payload: request,
+        url: `/threads/${threadId}/comments`,
+        payload,
       });
 
       // Assert
@@ -151,35 +132,23 @@ describe('/threads endpoint', () => {
       expect(response.statusCode).toEqual(401);
       expect(responseJson.message).toEqual('Missing authentication');
     });
-  });
 
-  describe('when GET /threads', () => {
-    it('should response 200', async () => {
-      // Arrange
+    it('harus merespon 404 ketika tidak ditemukan thread', async () => {
+      // Action
+      const payload = {
+        content: 'Ini contoh comment',
+      };
+
       const server = await createServer(container);
 
       // Action
       const response = await server.inject({
-        method: 'GET',
-        url: `/threads/${threadId}`,
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual('success');
-      expect(responseJson.data.thread).toBeDefined();
-      expect(responseJson.data.thread.comments).toHaveLength(0);
-    });
-
-    it('should response 404 when no thread found', async () => {
-      // Arrange
-      const server = await createServer(container);
-
-      // Action
-      const response = await server.inject({
-        method: 'GET',
-        url: '/threads/xxx',
+        method: 'POST',
+        url: '/threads/thread-321/comments',
+        payload,
+        headers: {
+          authorization: accessToken,
+        },
       });
 
       // Assert
@@ -187,6 +156,27 @@ describe('/threads endpoint', () => {
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual('thread yang anda cari tidak ada');
+    });
+  });
+
+  describe('ketika DELETE /threads/{threadID}/comments/{commentId}', () => {
+    it('harus merespon 200 dan comment berhasil dihapus', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/threads/${threadId}/comments/${commentId}`,
+        headers: {
+          authorization: accessToken,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
     });
   });
 });
