@@ -10,7 +10,6 @@ class GetDetailThreadUseCase {
     const detailThread = await this._threadRepository.getThreadById(id_thread);
 
     const comments = await this._commentRepository.getCommentsByThreadId(id_thread);
-    console.log(comments);
 
     const detailComment = [];
     comments.forEach((comment) => {

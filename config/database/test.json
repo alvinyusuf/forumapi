@@ -1,7 +1,7 @@
 {
-  "user": "developer",
-  "password": "aku",
-  "host": "localhost",
+  "user": "developer@forumapi",
+  "password": "krixI2!.Ilyx",
+  "host": "forumapi.postgres.database.azure.com",
   "port": 5432,
   "database": "forumapi_test"
 }
